@@ -1,86 +1,127 @@
-/* 1. SETUP: Defining your "Design Intent" colors */
 :root {
-    --bg-color: #0a0a0c;        /* Deep space black */
-    --card-bg: #16161a;        /* Dark grey card */
-    --accent-color: #00f2ff;   /* Neon cyan (change this to your vibe!) */
-    --text-main: #ffffff;
-    --transition-speed: 0.4s;
+    --bg-obsidian: #0A0A0A;
+    --accent-glow: #E2B04D; /* Default Vinyl Amber */
+    --font-heading: 'Archivo Black', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --spring-easing: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 body {
+    background-color: var(--bg-obsidian);
+    color: white;
     margin: 0;
-    padding: 0;
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif; /* You can link a Google Font later */
+    overflow: hidden;
+    font-family: var(--font-mono);
+}
+
+/* --- Global Foundations --- */
+.grain-overlay {
+    position: fixed;
+    inset: 0;
+    background: url('https://grainy-gradients.vercel.app/noise.svg');
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.ghost-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20vw;
+    font-weight: 900;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.05);
+    color: transparent;
+    z-index: 1;
+}
+
+.floor-reflection {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40vh;
+    background: linear-gradient(to top, rgba(10,10,10,1), transparent);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    z-index: 2;
+}
+
+/* --- The Rotary Stage --- */
+.vault-stage {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    perspective: 1200px;
+    z-index: 10;
+}
+
+.rotary-wheel {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    overflow: hidden;
+    transform-style: preserve-3d;
 }
 
-/* 2. THE GRID: This creates the "Masterful Typography" layout */
-.hero-container {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    width: 90vw;
-    height: 80vh;
-    gap: 2rem;
+.medium-item {
+    position: absolute;
+    transition: all 0.6s var(--spring-easing);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.top-nav h1 {
-    font-size: 3rem;
-    letter-spacing: 0.5rem;
-    text-transform: uppercase;
-    border-bottom: 2px solid var(--accent-color);
-    display: inline-block;
+/* State: Active Center */
+.medium-item.active {
+    transform: translateZ(200px) scale(1.2);
+    opacity: 1;
+    filter: grayscale(0) blur(0);
+    z-index: 100;
+}
+
+/* State: Flanks */
+.flank-left {
+    transform: translateX(-350px) rotateY(45deg) scale(0.7);
+    opacity: 0.4;
+    filter: grayscale(1) blur(4px);
+}
+
+.flank-right {
+    transform: translateX(350px) rotateY(-45deg) scale(0.7);
+    opacity: 0.4;
+    filter: grayscale(1) blur(4px);
+}
+
+/* --- Typography & HUD --- */
+.medium-title {
+    font-family: var(--font-heading);
+    font-size: 5rem;
     margin: 0;
+    text-shadow: 0 0 20px var(--accent-glow);
 }
 
-/* 3. INTERACTIVE SECTION: Using CSS Grid for the characters */
-.character-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Three equal columns */
-    gap: 1.5rem;
-    perspective: 1000px; /* Adds 3D depth */
-}
-
-/* 4. ATMOSPHERIC HOVER STATES */
-.card {
-    background: var(--card-bg);
-    border: 1px solid #333;
+.hud-top, .hud-bottom {
+    position: absolute;
+    width: 100%;
     padding: 2rem;
     display: flex;
-    align-items: flex-end;
-    transition: all var(--transition-speed) cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
+    justify-content: space-between;
+    box-sizing: border-box;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
 }
 
-/* This is the "Reaction" the assignment asks for */
-.card:hover {
-    transform: translateY(-10px) scale(1.02);
-    border-color: var(--accent-color);
-    box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
-}
+.hud-top { top: 0; }
+.hud-bottom { bottom: 0; }
 
-.card h2 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    transition: color var(--transition-speed);
-}
+/* Visualizer Animation */
+.audio-visualizer { display: flex; gap: 4px; align-items: flex-end; height: 20px; }
+.bar { width: 3px; background: var(--accent-glow); animation: pulse 0.5s infinite alternate; }
+.bar:nth-child(2) { animation-delay: 0.1s; }
+.bar:nth-child(3) { animation-delay: 0.2s; }
 
-.card:hover h2 {
-    color: var(--accent-color);
-}
-
-/* Optional: Add a subtle glow behind the cards */
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05));
-    pointer-events: none;
+@keyframes pulse { 
+    from { height: 4px; } 
+    to { height: 20px; } 
 }
