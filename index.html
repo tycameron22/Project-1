@@ -3,46 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hero Experience | Faction Name</title>
+    <title>The Sonic Chronology | Vault of Resonance</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="grain-overlay"></div>
+    <div class="ghost-title">RESONANCE</div>
+    <div class="floor-reflection"></div>
 
-    <main class="hero-container">
-        
-        <header class="top-nav">
-            <h1>PROJECT TITLE</h1>
+    <main class="vault-stage">
+        <header class="hud-top">
+            <div class="year-counter">EST. <span id="current-year">1948</span></div>
         </header>
 
-        <section class="character-grid">
-            <div class="card" id="character-1">
-                <div class="card-content">
-                    <h2>The Guardian</h2>
-                    <p>Faction: The Vanguard</p>
+        <section class="rotary-wheel">
+            <div class="medium-item flank-left" data-era="1980" data-color="#A1A1A1">
+                <div class="visual-asset cd-asset"></div>
+                <div class="spec-sheet">
+                    <span>MAT: IRIDISCENT SILVER</span>
+                    <span>TYPE: DIGITAL OPTIC</span>
                 </div>
             </div>
 
-            <div class="card" id="character-2">
-                <div class="card-content">
-                    <h2>The Shadow</h2>
-                    <p>Faction: The Void</p>
+            <div class="medium-item active" data-era="1948" data-color="#E2B04D">
+                <div class="visual-asset vinyl-asset"></div>
+                <div class="item-info">
+                    <h2 class="medium-title">VINYL</h2>
                 </div>
             </div>
 
-            <div class="card" id="character-3">
-                <div class="card-content">
-                    <h2>The Scholar</h2>
-                    <p>Faction: The Archives</p>
-                </div>
+            <div class="medium-item flank-right" data-era="1950" data-color="#FF0055">
+                <div class="visual-asset jukebox-asset"></div>
             </div>
         </section>
 
-        <footer class="footer-info">
-            <p>Design Intent: Interactive Hero Screen</p>
+        <footer class="hud-bottom">
+            <div class="index-readout">FAC_01 // ANALOG</div>
+            <div class="audio-visualizer">
+                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
         </footer>
-
     </main>
-
-    <script src="script.js"></script>
 </body>
 </html>
