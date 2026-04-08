@@ -40,4 +40,413 @@
         .grain-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .ghost-title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--font-heading);
+            font-size: 20vw;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.05);
+            z-index: 0;
+            letter-spacing: -0.02em;
+            transition: transform var(--transition-spring);
+        }
+
+        .spotlight {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, var(--accent-color) 0%, transparent 60%);
+            opacity: 0.15;
+            z-index: 1;
+            filter: blur(50px);
+            transition: background var(--transition-spring), transform var(--transition-spring);
+        }
+
+        .floor {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 30vh;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, var(--bg-color) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* 3. The HUD (Minimalist UI) */
+        .hud {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            padding: 2rem;
+            z-index: 500;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hud-top, .hud-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .hud-year {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            color: var(--accent-color);
+            transition: color var(--transition-spring);
+        }
+
+        .hud-index {
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        .spec-sheet {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 5px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.7;
+        }
+
+        .visualizer {
+            display: flex;
+            gap: 4px;
+            align-items: flex-end;
+            height: 20px;
+        }
+
+        .bar {
+            width: 4px;
+            background-color: var(--accent-color);
+            animation: bounce 1s infinite alternate;
+            transition: background-color var(--transition-spring);
+        }
+        .bar:nth-child(2) { animation-delay: 0.2s; }
+        .bar:nth-child(3) { animation-delay: 0.4s; }
+        .bar:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes bounce {
+            0% { height: 5px; }
+            100% { height: 20px; }
+        }
+
+        /* 4. The Typography Hierarchy */
+        .header-container {
+            position: absolute;
+            top: 15%;
+            width: 100%;
+            text-align: center;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .active-medium {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(0,0,0,0.8);
+            transition: font-family 0.3s ease;
+        }
+
+        /* 5. The Rotary Carousel (Interactive Geometry) */
+        .carousel-container {
+            position: relative;
+            width: 100vw;
+            height: 50vh;
+            perspective: 1200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .item {
+            position: absolute;
+            width: 300px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: #fff;
+            transition: var(--transition-spring);
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            pointer-events: auto;
+            text-align: center;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Material / Aesthetic Mockups inside Items */
+        .item-visual {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: #222;
+        }
+
+        #item-vinyl .item-visual {
+            background: repeating-radial-gradient(#111, #111 5px, #222 6px, #111 7px);
+            box-shadow: 0 0 15px rgba(226, 176, 77, 0.3);
+        }
+        
+        #item-jukebox {
+            border: 2px solid #FF0055;
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.2);
+        }
+
+        #item-ipod {
+            background: linear-gradient(135deg, #eee 0%, #aaa 100%);
+            color: #000;
+        }
+
+        #item-ipod .item-visual {
+            background: #fff;
+            border: 2px solid #ccc;
+        }
+
+        #item-cd {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.0));
+            border-top: 1px solid rgba(255,255,255,0.5);
+        }
+
+        #item-cd .item-visual {
+            background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
+            opacity: 0.6;
+        }
+
+        #item-airpods {
+            background: #ffffff;
+            color: #000;
+            border-radius: 30px;
+        }
+
+        /* CSS 3D States */
+        .item.active {
+            transform: translateZ(100px) scale(1.2);
+            opacity: 1;
+            z-index: 100;
+            box-shadow: 0 0 50px var(--accent-color);
+        }
+
+        .item.prev {
+            transform: translateX(-35vw) translateZ(-100px) rotateY(45deg) scale(0.7);
+            opacity: 0.4;
+            z-index: 50;
+            filter: grayscale(80%);
+        }
+
+        .item.next {
+            transform: translateX(35vw) translateZ(-100px) rotateY(-45deg) scale(0.7);
+            opacity: 0.4;
+            z-index: 50;
+            filter: grayscale(80%);
+        }
+
+        .item.hidden-left {
+            transform: translateX(-60vw) translateZ(-200px) rotateY(60deg) scale(0.5);
+            opacity: 0;
+            z-index: 10;
+        }
+
+        .item.hidden-right {
+            transform: translateX(60vw) translateZ(-200px) rotateY(-60deg) scale(0.5);
+            opacity: 0;
+            z-index: 10;
+        }
+
+        /* Navigation Arrows */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: white;
+            font-size: 3rem;
+            font-family: var(--font-body);
+            opacity: 0.3;
+            cursor: pointer;
+            z-index: 200;
+            transition: opacity 0.3s, text-shadow 0.3s;
+            pointer-events: auto;
+        }
+
+        .nav-btn:hover {
+            opacity: 1;
+            text-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .nav-left { left: 5vw; }
+        .nav-right { right: 5vw; }
+
+    </style>
+</head>
+<body>
+
+    <div class="grain-overlay"></div>
+    <div class="ghost-title" id="ghost-title">RESONANCE</div>
+    <div class="spotlight"></div>
+    <div class="floor"></div>
+
+    <div class="hud">
+        <div class="hud-top">
+            <div class="hud-index" id="hud-index">FAC_01 // ANALOG</div>
+            <div class="hud-year" id="hud-year">EST. 1948</div>
+        </div>
+        
+        <div class="header-container">
+            <div class="active-medium" id="hud-medium">Vinyl Record</div>
+        </div>
+
+        <div class="hud-bottom">
+            <div class="spec-sheet">
+                <span style="color: var(--accent-color);">Material</span>
+                <span id="hud-material">Pressed PVC / Brass</span>
+            </div>
+            <div class="visualizer">
+                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <button class="nav-btn nav-left" onclick="moveCarousel(-1)">&#10094;</button>
+    <div class="carousel-container" id="carousel">
+        
+        <div class="item" id="item-vinyl" 
+             data-color="#E2B04D" data-font="'Playfair Display', serif" 
+             data-year="EST. 1948" data-medium="Vinyl Record" 
+             data-material="Pressed PVC / Brass" data-index="FAC_01 // ANALOG" data-ghost="ANALOG">
+            <div class="item-visual"></div>
+            <h3>Vinyl</h3>
+        </div>
+
+        <div class="item" id="item-jukebox" 
+             data-color="#FF0055" data-font="'Bungee', cursive" 
+             data-year="EST. 1950" data-medium="Jukebox" 
+             data-material="Chrome / Neon Glass" data-index="FAC_02 // NEON" data-ghost="ELECTRIC">
+             <div class="item-visual" style="border-radius: 10px;"></div>
+            <h3>Jukebox</h3>
+        </div>
+
+        <div class="item" id="item-cd" 
+             data-color="#A1A1A1" data-font="'VT323', monospace" 
+             data-year="EST. 1982" data-medium="Compact Disc" 
+             data-material="Polycarbonate / Aluminum" data-index="FAC_03 // LASER" data-ghost="OPTICAL">
+             <div class="item-visual"></div>
+            <h3>CD Player</h3>
+        </div>
+
+        <div class="item" id="item-ipod" 
+             data-color="#007AFF" data-font="system-ui, -apple-system, sans-serif" 
+             data-year="EST. 2001" data-medium="Digital Player" 
+             data-material="Anodized Aluminum" data-index="FAC_04 // POCKET" data-ghost="DIGITAL">
+             <div class="item-visual"></div>
+            <h3>MP3</h3>
+        </div>
+
+        <div class="item" id="item-airpods" 
+             data-color="#FFFFFF" data-font="'Helvetica Neue', Helvetica, Arial, sans-serif" 
+             data-year="EST. 2016" data-medium="True Wireless" 
+             data-material="Gloss Plastic / Silicon" data-index="FAC_05 // CLOUD" data-ghost="WIRELESS">
+             <div class="item-visual" style="width: 50px; height: 80px; border-radius: 20px;"></div>
+            <h3>Pods</h3>
+        </div>
+
+    </div>
+    <button class="nav-btn nav-right" onclick="moveCarousel(1)">&#10095;</button>
+
+    <script>
+        const items = document.querySelectorAll('.item');
+        let currentIndex = 0;
+
+        function updateCarousel() {
+            items.forEach((item, index) => {
+                // Reset classes
+                item.className = 'item';
+                
+                // Calculate relative position with wrapping
+                let diff = (index - currentIndex + items.length) % items.length;
+
+                // Assign CSS 3D classes based on difference
+                if (diff === 0) {
+                    item.classList.add('active');
+                    updateHUD(item);
+                } else if (diff === 1) {
+                    item.classList.add('next');
+                } else if (diff === items.length - 1) {
+                    item.classList.add('prev');
+                } else if (diff <= items.length / 2) {
+                    item.classList.add('hidden-right');
+                } else {
+                    item.classList.add('hidden-left');
+                }
+            });
+
+            // Parallax effect on ghost title
+            const ghost = document.getElementById('ghost-title');
+            ghost.style.transform = `translate(-50%, -50%) translateX(${currentIndex * -2}vw)`;
+        }
+
+        function updateHUD(activeItem) {
+            // Extract data attributes
+            const color = activeItem.getAttribute('data-color');
+            const font = activeItem.getAttribute('data-font');
+            const year = activeItem.getAttribute('data-year');
+            const medium = activeItem.getAttribute('data-medium');
+            const material = activeItem.getAttribute('data-material');
+            const indexStr = activeItem.getAttribute('data-index');
+            const ghostText = activeItem.getAttribute('data-ghost');
+
+            // Update Root Variables (Triggers CSS transitions automatically)
+            document.documentElement.style.setProperty('--accent-color', color);
+            
+            // Update HUD DOM Elements
+            document.getElementById('hud-year').innerText = year;
+            document.getElementById('hud-medium').innerText = medium;
+            document.getElementById('hud-medium').style.fontFamily = font;
+            document.getElementById('hud-material').innerText = material;
+            document.getElementById('hud-index').innerText = indexStr;
+            document.getElementById('ghost-title').innerText = ghostText;
+        }
+
+        function moveCarousel(direction) {
+            currentIndex = (currentIndex + direction + items.length) % items.length;
+            updateCarousel();
+        }
+
+        // Initialize on load
+        updateCarousel();
+
+        // Optional: Click on items to make them active
+        items.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                currentIndex = index;
+                updateCarousel();
+            });
+        });
+    </script>
+</body>
+</html>
