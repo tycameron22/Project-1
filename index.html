@@ -205,6 +205,18 @@
             height: 150px;
             border-radius: 50%;
             background: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Image handling to ensure perfect fit */
+        .item-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: inherit;
         }
 
         #item-vinyl .item-visual {
@@ -347,7 +359,9 @@
              data-color="#FF0055" data-font="'Bungee', cursive" 
              data-year="EST. 1950" data-medium="Jukebox" 
              data-material="Chrome / Neon Glass" data-index="FAC_02 // NEON" data-ghost="ELECTRIC">
-             <div class="item-visual" style="border-radius: 10px;"></div>
+             <div class="item-visual" style="border-radius: 10px; background: transparent;">
+                 <img src="CrosleyStandardRocket-5_2048x2048.jpg" alt="Vintage Jukebox">
+             </div>
             <h3>Jukebox</h3>
         </div>
 
